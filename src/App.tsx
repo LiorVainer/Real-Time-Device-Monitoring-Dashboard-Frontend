@@ -1,10 +1,10 @@
 import "./App.css";
-import { Graph } from "./components/Graph";
+import { DashboardPage } from "./pages/DashboardPage";
 
 function App() {
   return (
     <>
-      <Graph />
+      <DashboardPage />
     </>
   );
 }

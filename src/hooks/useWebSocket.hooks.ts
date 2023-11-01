@@ -26,8 +26,11 @@ export const useWebSocket = () => {
         if (newAlert.importance === Importance.HIGH) {
           Swal.fire({
             icon: "warning",
-            title: "High Importance Alert!",
-            text: `Title: ${newAlert.title}\nDescription: ${newAlert.description}`,
+            title: `High Importance Alert! - ${newAlert.title}`,
+            text: `${newAlert.description}`,
+            timer: 2000,
+            position: "bottom-end",
+            showConfirmButton: false,
           });
         }
         setAlerts((prevMessages) => [...prevMessages, newAlert]);

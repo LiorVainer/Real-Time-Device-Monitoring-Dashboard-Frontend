@@ -1,4 +1,4 @@
-import { ResponsiveBar } from "@nivo/bar";
+import { Bar } from "@nivo/bar";
 import { useWebSocket } from "../../hooks/useWebSocket.hooks";
 import { getColumnColorBasedOnAlert } from "../../utils/alert.utils";
 import classes from "./graph.module.scss";
@@ -9,7 +9,7 @@ export const Graph = (props: GraphProps) => {
   const { alerts } = useWebSocket();
 
   // Data transformation: Extracting 'level' from alerts
-  const chartData = alerts.map((alert) => ({
+  const chartData = alerts.slice(-20).map((alert) => ({
     level: alert.level,
     createdAt: new Date(alert.createdAt).toLocaleString("he-IL", {
       timeStyle: "medium",
@@ -21,13 +21,13 @@ export const Graph = (props: GraphProps) => {
 
   return (
     <div className={classes.container}>
-      <h1>Graph</h1>
-      <div />
-      <ResponsiveBar
+      <Bar
+        height={600}
+        width={1800}
         indexBy={"createdAt"}
         data={chartData}
         keys={["level"]}
-        margin={{ top: 50, right: 130, bottom: 300, left: 60 }}
+        margin={{ top: 2, right: 2, bottom: 60, left: 60 }}
         padding={0.4}
         valueScale={{ type: "linear" }}
         colors={getColumnColorBasedOnAlert}
@@ -35,6 +35,9 @@ export const Graph = (props: GraphProps) => {
         enableLabel={false}
         axisTop={null}
         axisRight={null}
+        axisBottom={{
+          tickRotation: -90,
+        }}
         axisLeft={{
           tickSize: 5,
           tickPadding: 5,
@@ -44,6 +47,7 @@ export const Graph = (props: GraphProps) => {
           legendOffset: -40,
         }}
       />
+      <h2>{alerts.length} Alerts</h2>
     </div>
   );
 };

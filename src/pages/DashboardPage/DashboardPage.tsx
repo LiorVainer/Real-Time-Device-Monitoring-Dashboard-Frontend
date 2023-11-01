@@ -6,6 +6,7 @@ export interface DashboardPageProps {}
 export const DashboardPage = (props: DashboardPageProps) => {
   return (
     <div className={classes.container}>
+      <h1>Dashboard View</h1>
       <Graph />
     </div>
   );
