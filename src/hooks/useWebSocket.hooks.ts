@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { ALERT_WS_TYPE, Alert, WsAlert } from "../models/alert.model";
+import Swal from "sweetalert2";
+import {
+  ALERT_WS_TYPE,
+  Alert,
+  Importance,
+  WsAlert,
+} from "../models/alert.model";
 
 export const useWebSocket = () => {
   const [alerts, setAlerts] = useState<Alert[]>([]);
@@ -16,8 +22,15 @@ export const useWebSocket = () => {
     socket.onmessage = (event) => {
       const message: WsAlert = JSON.parse(event.data);
       if (message.type === ALERT_WS_TYPE) {
-        const newMessage = message.data;
-        setAlerts((prevMessages) => [...prevMessages, newMessage]);
+        const newAlert = message.data;
+        if (newAlert.importance === Importance.HIGH) {
+          Swal.fire({
+            icon: "warning",
+            title: "High Importance Alert!",
+            text: `Title: ${newAlert.title}\nDescription: ${newAlert.description}`,
+          });
+        }
+        setAlerts((prevMessages) => [...prevMessages, newAlert]);
       }
     };
 
