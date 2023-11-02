@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from "react";
-import { useWebSocket } from "../hooks/useWebSocket"; // Assuming the useWebSocket hook is in a separate file
+import { useWebSocket } from "../hooks/useWebSocket.hooks"; // Assuming the useWebSocket hook is in a separate file
 
 type WebSocketContextType = ReturnType<typeof useWebSocket>;
 
@@ -18,15 +18,17 @@ export const useAlertsContext = () => {
   return context;
 };
 
-const AlertsProviderComp = AlertsContext.Provider;
+interface AlertsProviderProps {
+  children: React.ReactNode;
+}
 
-export const AlertsProvider: React.FC = ({ children }) => {
+export const AlertsProvider: React.FC<AlertsProviderProps> = ({ children }) => {
   const alertsWebSocket = useWebSocket(); // Using the hook to get the WebSocket connection and alerts
 
   return (
-    <AlertsProviderComp.Provider value={alertsWebSocket}>
+    <AlertsContext.Provider value={alertsWebSocket}>
       {children}
-    </AlertsProviderComp.Provider>
+    </AlertsContext.Provider>
   );
 };
 

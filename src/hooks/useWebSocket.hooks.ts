@@ -11,7 +11,7 @@ export const useWebSocket = () => {
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [ws, setWs] = useState<WebSocket | null>(null);
 
-  useEffect(() => {
+  const connectWebSocket = () => {
     const socket = new WebSocket(`ws://${import.meta.env.VITE_API_LOCATION}`);
 
     socket.onopen = () => {
@@ -29,8 +29,6 @@ export const useWebSocket = () => {
             title: `High Importance Alert! - ${newAlert.title}`,
             text: `${newAlert.description}`,
             timer: 2000,
-            position: "bottom-end",
-            showConfirmButton: false,
           });
         }
         setAlerts((prevMessages) => [...prevMessages, newAlert]);
@@ -40,14 +38,21 @@ export const useWebSocket = () => {
     socket.onclose = () => {
       console.log("Disconnected from the WebSocket server");
       setWs(null);
+      setTimeout(() => connectWebSocket(), 5000); // Try reconnecting after 5 seconds
     };
 
+    return socket;
+  };
+
+  useEffect(() => {
+    const newSocket = connectWebSocket();
+
     return () => {
-      if (socket) {
-        socket.close();
+      if (newSocket) {
+        newSocket.close();
       }
     };
-  }, []); // Runs only once on component mount
+  }, []);
 
   return { alerts, ws };
 };

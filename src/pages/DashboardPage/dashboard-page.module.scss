@@ -1,0 +1,38 @@
+.container {
+  & > footer {
+    padding-inline: 6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h2 {
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #525252;
+    }
+  }
+
+  .serviceStatusContainer {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .serviceUp {
+    background-color: darken(green, 10);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+  }
+
+  .serviceDown {
+    background-color: darken(red, 10);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+  }
+}

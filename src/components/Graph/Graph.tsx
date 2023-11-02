@@ -1,12 +1,12 @@
 import { Bar } from "@nivo/bar";
-import { useWebSocket } from "../../hooks/useWebSocket.hooks";
+import { useAlertsContext } from "../../contexts/alerts.context";
 import { getColumnColorBasedOnAlert } from "../../utils/alert.utils";
 import classes from "./graph.module.scss";
 
 export interface GraphProps {}
 
-export const Graph = (props: GraphProps) => {
-  const { alerts } = useWebSocket();
+export const Graph = () => {
+  const { alerts } = useAlertsContext();
 
   // Data transformation: Extracting 'level' from alerts
   const chartData = alerts.slice(-20).map((alert) => ({
@@ -16,8 +16,6 @@ export const Graph = (props: GraphProps) => {
     }),
     importance: alert.importance,
   }));
-
-  console.log("chartData", chartData);
 
   return (
     <div className={classes.container}>
@@ -47,7 +45,6 @@ export const Graph = (props: GraphProps) => {
           legendOffset: -40,
         }}
       />
-      <h2>{alerts.length} Alerts</h2>
     </div>
   );
 };
